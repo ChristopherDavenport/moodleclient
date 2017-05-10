@@ -59,6 +59,8 @@ lazy val bintraySettings = Seq(
   }
 )
 
+
+
 // Adapted from Rob Norris' post at https://tpolecat.github.io/2014/04/11/scalac-flags.html
 scalacOptions in ThisBuild ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
@@ -145,6 +147,7 @@ lazy val core = project.in(file("core"))
     name := "moodleclient-core",
     coursierSettings,
     bintraySettings,
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
     libraryDependencies ++= {
       val http4sVersion = "0.17.0-M2"
       Seq(
