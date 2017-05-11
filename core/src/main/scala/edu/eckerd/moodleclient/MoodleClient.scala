@@ -14,13 +14,13 @@ case class MoodleClient(
                         server: MoodleServer
                        ) {
 
-  def fetchAs[I, O](moodleFunction: MoodleFunction[I, O]) // I => UrlForm)
-                  (implicit decoder: Decoder[O]): Kleisli[Task, I, O] =  Kleisli[Task, I, O]( (input: I) => {
+  def fetch[I, O](moodleFunction: I)
+                 (implicit moodleable: MoodleAble[I, O], decoder : Decoder[O]): Task[O] =  {
 
-    val form = moodleFunction(input).+(("moodlewsrestformat", "json"))
+    val form = moodleable.render(moodleFunction).+(("moodlewsrestformat", "json"))
     val request = POST(server.webserviceUrl, form)
       client.expect(request)(jsonOf[O])
-    }
-  )
+  }
+
 
 }

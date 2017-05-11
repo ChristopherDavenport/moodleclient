@@ -7,10 +7,9 @@ import org.http4s.UrlForm
 
 package object course {
 
-  val getCourses : MoodleFunction[Token, List[Course]] = token => {
-    UrlForm(("wstoken", token),
-      ("wsfunction","core_course_get_courses"))
-  }
+//  val getCourses : MoodleFunction[Token, List[Course]] = token => {
+//
+//  }
 
   val getActivitiesOverview : MoodleFunction[AuthorizedCourseIds, Json] = aci => {
       UrlForm(
