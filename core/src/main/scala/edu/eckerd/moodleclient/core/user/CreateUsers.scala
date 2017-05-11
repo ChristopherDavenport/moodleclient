@@ -1,14 +1,14 @@
 package edu.eckerd.moodleclient.core.user
 
 import edu.eckerd.moodleclient.MoodleAble
-import edu.eckerd.moodleclient.models.{User, Users}
+import edu.eckerd.moodleclient.models.{CreatedUser, User, Users}
 import io.circe.Json
 import org.http4s.UrlForm
 
 case class CreateUsers(users: List[User])
 
 object CreateUsers {
-  implicit val CreateUsersMoodleAble = new MoodleAble[CreateUsers, Json]{
+  implicit val CreateUsersMoodleAble = new MoodleAble[CreateUsers, List[CreatedUser]]{
 
     def render(input: CreateUsers): UrlForm = {
       val functionName = List(("wsfunction", "core_user_create_users"))
@@ -16,7 +16,7 @@ object CreateUsers {
       val refined = List(
         ("users[0][username]", head.username), //", ""
       ("users[0][password]", "Password123#"),  //= string
-      ("users[0][createpassword]", "0"), //= int
+//      ("users[0][createpassword]", "0"), //= int
       ("users[0][firstname]", head.firstname), //= string
       ("users[0][lastname]", head.lastname), //= string
       ("users[0][email]", head.email), //= string
