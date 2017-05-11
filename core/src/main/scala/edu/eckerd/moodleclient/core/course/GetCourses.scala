@@ -8,7 +8,7 @@ case class GetCourses(token: Token)
 
 object GetCourses {
 
-  implicit val moodleAble = new MoodleAble[GetCourses, List[Course]] {
+  implicit val GetCoursesMoodleAble = new MoodleAble[GetCourses, List[Course]] {
     def render(input: GetCourses): UrlForm = {
       UrlForm(
         ("wstoken", input.token),

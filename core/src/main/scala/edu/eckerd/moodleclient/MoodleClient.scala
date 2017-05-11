@@ -11,14 +11,18 @@ import org.http4s.dsl._
 
 case class MoodleClient(
                         client: Client,
-                        server: MoodleServer
+                        server: MoodleServer,
+                        token: Option[Token]
                        ) {
 
   def fetch[I, O](moodleFunction: I)
                  (implicit moodleable: MoodleAble[I, O], decoder : Decoder[O]): Task[O] =  {
 
     val form = moodleable.render(moodleFunction).+(("moodlewsrestformat", "json"))
-    val request = POST(server.webserviceUrl, form)
+    val authform = token.map(token => form.+(("wstoken", token))).getOrElse(form)
+
+
+    val request = POST(server.webserviceUrl, authform)
       client.expect(request)(jsonOf[O])
   }
 

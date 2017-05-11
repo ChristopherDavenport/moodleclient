@@ -29,16 +29,10 @@ package object course {
       )
     )
   }
-
-  val getContents : MoodleFunction[AuthorizedCourseId, Json] = aci => {
-    UrlForm(
-      Map(
-        "wstoken" -> List(aci.token),
-        "wsfunction" -> List("core_course_get_contents"),
-        "courseid" -> List(aci.courseId)
-      )
-    )
-  }
+//
+//  val getContents : MoodleFunction[AuthorizedCourseId, Json] = aci => {
+//
+//  }
 
   val getCourseModule: MoodleFunction[AuthorizedCourseModule, Json] = aci => {
     UrlForm(

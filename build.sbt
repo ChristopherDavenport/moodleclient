@@ -150,15 +150,20 @@ lazy val core = project.in(file("core"))
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
     libraryDependencies ++= {
       val http4sVersion = "0.17.0-M2"
+      val circeVersion = "0.7.1"
       Seq(
         "org.http4s" %% "http4s-dsl" % http4sVersion,
-        "org.http4s" %% "http4s-blaze-server" % http4sVersion,
-        "org.http4s" %% "http4s-blaze-client" % http4sVersion,
+        "org.http4s" %% "http4s-client" % http4sVersion,
         "org.http4s" %% "http4s-circe" % http4sVersion,
         // Optional for auto-derivation of JSON codecs
-        "io.circe" %% "circe-generic" % "0.7.1",
+        "io.circe" %% "circe-generic" % circeVersion,
         // Optional for string interpolation to JSON model
-        "io.circe" %% "circe-literal" % "0.7.1"
+        "io.circe" %% "circe-literal" % circeVersion,
+        "io.circe" %% "circe-optics" % circeVersion,
+        "org.scalatest" %% "scalatest" % "3.0.1" % Test,
+        "org.http4s" %% "http4s-blaze-client" % http4sVersion % Test,
+        "org.http4s" %% "http4s-blaze-server" % http4sVersion % Test
+
       )
     }
   )
@@ -166,7 +171,13 @@ lazy val core = project.in(file("core"))
 lazy val sandbox = project.in(file("sandbox"))
   .settings(
     name := "sandbox",
-    coursierSettings
+    coursierSettings,
+    libraryDependencies ++= {
+      val http4sVersion = "0.17.0-M2"
+      Seq(
+        "org.http4s" %% "http4s-blaze-client" % http4sVersion
+      )
+    }
   ).dependsOn(core)
 
 
