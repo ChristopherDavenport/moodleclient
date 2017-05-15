@@ -11,15 +11,18 @@ case class CreateUsers(users: List[CreateUser])
 
 object CreateUsers {
   implicit val CreateUsersMoodleAble = new MoodleAble[CreateUsers, List[CreatedUser]]{
-
     def render(input: CreateUsers): UrlForm = {
-      val functionName = List(("wsfunction", "core_user_create_users"))
-      val refined = input.users.zipWithIndex.flatMap{ case(user, index) => renderUser(user, index)}
-
-      UrlForm(
-        functionName ++ refined:_*
-      )
+      renderUsers(input.users)
     }
+  }
+
+  def renderUsers(l : List[CreateUser]): UrlForm = {
+    val functionName = List(("wsfunction", "core_user_create_users"))
+    val refined = l.zipWithIndex.flatMap{ case(user, index) => renderUser(user, index)}
+
+    UrlForm(
+      functionName ++ refined:_*
+    )
   }
 
   def renderUser(cUser: CreateUser, index: Int): List[(String, String)] = {
