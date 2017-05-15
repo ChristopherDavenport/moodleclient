@@ -29,7 +29,7 @@ sealed trait CourseRole {
   def fromValue(s: String): Option[CourseRole] = Try(s.toInt).toOption.flatMap(fromValue)
 
   def fromValue(role: Role): Option[CourseRole] = fromValue(role.roleid)
-  
+
 }
 
 object CourseRole {

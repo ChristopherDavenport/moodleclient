@@ -43,12 +43,12 @@ object CreateCourses {
 
     val permanent = Map(
       s"courses[$arrayVal][fullname]" -> List(course.fullname),
-      s"courses[$arrayVal][shortname]" -> List(course.shortname),
-      s"courses[$arrayVal][categoryid]" -> List(course.categoryid.show)
+      s"courses[$arrayVal][shortname]" -> List(course.shortname)
     )
 
-    val idNumber = course.idnumber.map(id => Map(s"courses[$arrayVal][idnumber]" -> List(id)))
-    permanent
+    val category = course.categoryid.map( c => Map(s"courses[$arrayVal][categoryid]" -> List(c.show))).getOrElse(Map.empty[String, Seq[String]])
+    val idNumber = course.idnumber.map(id => Map(s"courses[$arrayVal][idnumber]" -> List(id.show))).getOrElse(Map.empty[String, Seq[String]])
+    permanent ++ category ++ idNumber
   }
 //
 //    s"courses[$arrayVal][summary]" ->
