@@ -1,5 +1,6 @@
 package edu.eckerd.moodleclient.models
 
+import io.circe.Json
 import io.circe.generic.JsonCodec
 
 @JsonCodec case class User(
@@ -8,7 +9,7 @@ import io.circe.generic.JsonCodec
                             lastname: String,
                             email: String,
 
-                            auth : String = "Manual", //Auth plugins include manual, ldap, imap, etc
+                            auth : Option[String] = Some("Manual"), //Auth plugins include manual, ldap, imap, etc
                             id: Option[Int] = None,
                             fullname: Option[String] = None,
                             idnumber : Option[String] = None, //An arbitrary ID code number perhaps from the institution
@@ -38,7 +39,7 @@ import io.circe.generic.JsonCodec
 
                             theme : Option[String] = None, //Theme name such as "standard", must exist on server
 
-                            timezone : String = "99", //Timezone code such as Australia/Perth, or 99 for default
+                            timezone : Option[String] = Some("99"), //Timezone code such as Australia/Perth, or 99 for default
 
                             mailformat : Option[Int] = None, //Mail format code is 0 for plain text, 1 for HTML etc
                             description : Option[String] = None, //User profile description
@@ -52,5 +53,8 @@ import io.circe.generic.JsonCodec
                             profileimageurl : Option[String] = None,   //User image profile URL - big version
 
                             customfields: Option[List[UserCustomField]] = None, //User custom fields (also known as user profile fields)
-                            preferences: Option[List[UserPreference]] = None
+                            preferences: Option[List[UserPreference]] = None,
+                            groups: Option[List[Json]] = None,
+                            roles: Option[List[Role]] = None,
+                            enrolledcourses: Option[List[Course]] = None
                           )
