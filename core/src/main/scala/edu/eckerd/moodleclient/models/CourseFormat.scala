@@ -1,6 +1,7 @@
 package edu.eckerd.moodleclient.models
+import io.circe.generic.JsonCodec
 
-case class CourseFormat(
+@JsonCodec case class CourseFormat(
                        name: String,
                        value: Int
                        )

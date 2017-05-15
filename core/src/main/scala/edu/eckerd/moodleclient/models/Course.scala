@@ -1,9 +1,10 @@
 package edu.eckerd.moodleclient.models
 
-//import io.circe.generic.JsonCodec
-import io.circe.generic.auto._
+import io.circe.generic.JsonCodec
 
-case class Course(
+
+
+@JsonCodec case class Course(
 
                  shortname: String,
                  categoryid: Int,
