@@ -34,18 +34,18 @@ object CreateUsers {
     val city : List[(String, String)] = user.city.map(c => List((s"users[$index][city]", c))).getOrElse(List.empty[(String, String)])
     val country : List[(String, String)] = user.country.map(c => List((s"users[$index][country]", c))).getOrElse(List.empty[(String, String)])
     val password: List[(String, String)] = cUser.password.map(p => List((s"users[$index][password]", p))).getOrElse(List.empty[(String, String)])
+    val auth : List[(String, String)] = user.auth.map(auth => List((s"users[$index][auth]", auth))).getOrElse(List.empty[(String, String)])
 
     val base: List[(String, String)] = List(
       (s"users[$index][username]", user.username),
       (s"users[$index][firstname]", user.firstname), //= string
       (s"users[$index][lastname]", user.lastname), //= string
       (s"users[$index][email]", user.email), //= string
-      (s"users[$index][auth]", user.auth), //= string
       (s"users[$index][idnumber]", user.idnumber.getOrElse("")), //= string
       (s"users[$index][createpassword]", boolInt(cUser.createPassword).toString) //= int
     )
 
-    base ::: lang ::: calendarType ::: city ::: country ::: password
+    base ::: auth ::: lang ::: calendarType ::: city ::: country ::: password
 
 
   }

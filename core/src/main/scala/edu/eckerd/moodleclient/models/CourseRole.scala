@@ -6,6 +6,10 @@ import scala.util.Try
 
 sealed trait CourseRole {
   import CourseRole._
+  //  1 => Manager
+  //  3 => Teacher
+  //  4 => Non-editing teacher
+  //  5 => Student
 
   val value: Int = this match {
     case Manager => 1
@@ -23,6 +27,9 @@ sealed trait CourseRole {
   }
 
   def fromValue(s: String): Option[CourseRole] = Try(s.toInt).toOption.flatMap(fromValue)
+
+  def fromValue(role: Role): Option[CourseRole] = fromValue(role.roleid)
+
 }
 
 object CourseRole {
@@ -30,7 +37,5 @@ object CourseRole {
   case object Teacher extends  CourseRole
   case object NonEditingTeacher extends CourseRole
   case object Student extends CourseRole
-
-
 
 }
