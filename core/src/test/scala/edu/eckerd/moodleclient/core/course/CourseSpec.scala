@@ -11,7 +11,7 @@ class CourseSpec extends FlatSpec with Matchers {
       ("wsfunction", "core_course_get_courses")
     }
 
-    GetCoursesMoodleAble.render(GetCourses()) shouldBe UrlForm()
+    GetCoursesMoodleAble.render(GetCourses()) shouldBe expected
   }
 
 }
