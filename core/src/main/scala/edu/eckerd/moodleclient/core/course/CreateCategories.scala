@@ -1,16 +1,17 @@
 package edu.eckerd.moodleclient.core.course
 
+import cats.data.NonEmptyList
 import edu.eckerd.moodleclient.models.{Category, CreatedCategory}
 import org.http4s.UrlForm
 import cats.implicits._
 import edu.eckerd.moodleclient.MoodleAble
 
-case class CreateCategories(categories: List[Category])
+case class CreateCategories(categories: NonEmptyList[Category])
 
 object CreateCategories {
 
   implicit val createCategoriesMoodleAble = new MoodleAble[CreateCategories, List[CreatedCategory]] {
-    override def render(input: CreateCategories): UrlForm = renderCategories(input.categories)
+    override def render(input: CreateCategories): UrlForm = renderCategories(input.categories.toList)
   }
 
 
