@@ -35,6 +35,11 @@ organization in ThisBuild := "edu.eckerd"
  */
 val BaseVersion = "0.1.0"
 
+val contributors = Seq(
+  "ChristopherDavenport" -> "Christopher Davenport",
+  "djkcel" -> "Kevin Celebi"
+)
+
 licenses += ("MIT", url("https://opensource.org/licenses/MIT"))
 
 
@@ -56,6 +61,49 @@ lazy val bintraySettings = Seq(
       Nil
     else
       (credentials in bintray).value
+  }
+)
+
+lazy val noPublishSettings = Seq(
+  publish := (),
+  publishLocal := (),
+  publishArtifact := false
+)
+
+lazy val publishSettings = Seq(
+  publishTo := {
+    val nexus = "https://oss.sonatype.org/"
+    if (version.value.trim.endsWith("SNAPSHOT"))
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  },
+  credentials ++= (for {
+    username <- Option(System.getenv().get("SONATYPE_USERNAME"))
+    password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
+  } yield Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", username, password)).toSeq,
+  publishMavenStyle := true,
+  pomIncludeRepository := { _ => false },
+  pomExtra := {
+    <developers>
+      {for ((username, name) <- contributors) yield
+      <developer>
+        <id>{username}</id>
+        <name>{name}</name>
+        <url>http://github.com/{username}</url>
+      </developer>
+      }
+    </developers>
+  },
+  pomPostProcess := { node =>
+    import scala.xml._
+    import scala.xml.transform._
+    def stripIf(f: Node => Boolean) = new RewriteRule {
+      override def transform(n: Node) =
+        if (f(n)) NodeSeq.Empty else n
+    }
+    val stripTestScope = stripIf { n => n.label == "dependency" && (n \ "scope").text == "test" }
+    new RuleTransformer(stripTestScope).transform(node)(0)
   }
 )
 
@@ -140,13 +188,16 @@ lazy val root = project
     core,
     sandbox
   )
-  .settings(coursierSettings, bintraySettings)
+  .settings(coursierSettings)
+  .settings(noPublishSettings)
 
 lazy val core = project.in(file("core"))
   .settings(
     name := "moodleclient-core",
     coursierSettings,
     bintraySettings,
+    publishSettings,
+    version := BaseVersion + "-SNAPSHOT",
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
     libraryDependencies ++= {
       val http4sVersion = "0.17.0-M2"
@@ -177,7 +228,8 @@ lazy val sandbox = project.in(file("sandbox"))
       Seq(
         "org.http4s" %% "http4s-blaze-client" % http4sVersion
       )
-    }
+    },
+    noPublishSettings
   ).dependsOn(core)
 
 
