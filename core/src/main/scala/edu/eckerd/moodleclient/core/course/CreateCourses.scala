@@ -1,13 +1,14 @@
 package edu.eckerd.moodleclient.core.course
 
 import cats.Show
+import cats.data.NonEmptyList
 import edu.eckerd.moodleclient.MoodleAble
 import edu.eckerd.moodleclient.models.Course
 import io.circe.Json
 import org.http4s.UrlForm
 import cats.implicits._
 
-case class CreateCourses(courses: List[Course])
+case class CreateCourses(courses: NonEmptyList[Course])
 
 object CreateCourses {
 
@@ -15,7 +16,7 @@ object CreateCourses {
     def render(input: CreateCourses): UrlForm = {
 
       UrlForm(
-       renderCourses(input.courses):_*
+       renderCourses(input.courses.toList):_*
       )
     }
   }
