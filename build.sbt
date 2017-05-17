@@ -36,7 +36,8 @@ organization in ThisBuild := "edu.eckerd"
 val BaseVersion = "0.1.0"
 
 val contributors = Seq(
-  "ChristopherDavenport" -> "Christopher Davenport"
+  "ChristopherDavenport" -> "Christopher Davenport",
+  "djkcel" -> "Kevin Celebi"
 )
 
 licenses += ("MIT", url("https://opensource.org/licenses/MIT"))
