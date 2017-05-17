@@ -1,5 +1,6 @@
 package edu.eckerd.moodleclient.core.user
 
+import cats.data.NonEmptyList
 import edu.eckerd.moodleclient.MoodleAble
 import edu.eckerd.moodleclient.models.{CreatedUser, User, Users}
 import io.circe.Json
@@ -7,7 +8,7 @@ import org.http4s.UrlForm
 
 
 
-case class CreateUsers(users: List[CreateUser])
+case class CreateUsers(users: NonEmptyList[CreateUser])
 
 object CreateUsers {
   implicit val CreateUsersMoodleAble = new MoodleAble[CreateUsers, List[CreatedUser]]{
@@ -16,9 +17,9 @@ object CreateUsers {
     }
   }
 
-  def renderUsers(l : List[CreateUser]): UrlForm = {
+  def renderUsers(l : NonEmptyList[CreateUser]): UrlForm = {
     val functionName = List(("wsfunction", "core_user_create_users"))
-    val refined = l.zipWithIndex.flatMap{ case(user, index) => renderUser(user, index)}
+    val refined = l.toList.zipWithIndex.flatMap{ case(user, index) => renderUser(user, index)}
 
     UrlForm(
       functionName ++ refined:_*
@@ -44,10 +45,7 @@ object CreateUsers {
       (s"users[$index][idnumber]", user.idnumber.getOrElse("")), //= string
       (s"users[$index][createpassword]", boolInt(cUser.createPassword).toString) //= int
     )
-
     base ::: auth ::: lang ::: calendarType ::: city ::: country ::: password
-
-
   }
 
 
