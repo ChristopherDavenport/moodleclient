@@ -3,7 +3,7 @@ package edu.eckerd.moodleclient.core.course
 import cats.Show
 import cats.data.NonEmptyList
 import edu.eckerd.moodleclient.MoodleAble
-import edu.eckerd.moodleclient.models.Course
+import edu.eckerd.moodleclient.models.{Course, CreatedCourse}
 import io.circe.Json
 import org.http4s.UrlForm
 import cats.implicits._
@@ -12,7 +12,7 @@ case class CreateCourses(courses: NonEmptyList[Course])
 
 object CreateCourses {
 
-  implicit val CreateCourseMoodleAble: MoodleAble[CreateCourses, Json] = new MoodleAble[CreateCourses, Json] {
+  implicit val CreateCourseMoodleAble = new MoodleAble[CreateCourses, List[CreatedCourse]] {
     def render(input: CreateCourses): UrlForm = {
 
       UrlForm(
