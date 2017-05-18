@@ -211,6 +211,7 @@ lazy val core = project.in(file("core"))
         // Optional for string interpolation to JSON model
         "io.circe" %% "circe-literal" % circeVersion,
         "io.circe" %% "circe-optics" % circeVersion,
+        "io.circe" %% "circe-parser" % circeVersion,
         "org.scalatest" %% "scalatest" % "3.0.1" % Test,
         "org.http4s" %% "http4s-blaze-client" % http4sVersion % Test,
         "org.http4s" %% "http4s-blaze-server" % http4sVersion % Test
